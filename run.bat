@@ -7,7 +7,7 @@ REM Activate the virtual environment
 call .venv\Scripts\activate.bat
 
 REM Run the Python script
-python src\manual_method\manual.py
+python src\benchmark\benchmark.py
 
 REM Keep the window open (optional)
 pause

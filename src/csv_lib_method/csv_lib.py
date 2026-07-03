@@ -1,19 +1,20 @@
 import os
 import time
+import csv
 
 def getMetric(filename):
-    with open(filename, "r") as file:
-        content = file.read().strip()
+    with open(filename, "r", newline="") as file:
+        #Avoid DictReader for faster reading
+        reader = csv.reader(file)
+        rows = list(reader)
 
-    rows = content.split("\n");
-
-    header = rows[0].split(",")
-
-    metrics = []
+    header = rows[0]
+    data_rows = rows[1:]
 
     agg = {}
-    for line in rows[1:]:
-        cells = line.split(",")
+    for cells in data_rows:
+        if not cells:
+            continue
         cid = cells[0]
         m = agg.setdefault(cid, {
             "campaign_id": cid, "impressions": 0, "clicks": 0,
@@ -29,7 +30,7 @@ def getMetric(filename):
         m["ctr"] = m["clicks"] / m["impressions"] if m["impressions"] else 0
         m["cpa"] = m["spend"] / m["conversions"] if m["conversions"] else 0
         metrics.append(m)
-    
+
     return metrics, len(rows)
 
 def getTop10HighestCTR(metrics):
@@ -41,30 +42,16 @@ def getTop10LowestCPA(metrics):
 def save_dicts_to_csv(data, filename) -> None:
     headers = list(data[0].keys())
 
-    header_line = ",".join(headers)
-    csv_rows = [header_line]
-
-    for row in data:
-        row_line = ",".join(str(row.get(key, "")) for key in headers)
-        csv_rows.append(row_line)
-
     current_dir = os.path.dirname(os.path.abspath(__file__))
     full_path = os.path.join(current_dir, filename)
 
-    with open(full_path, "w", encoding="utf-8") as file:
-        file.write("\n".join(csv_rows) + "\n")
+    with open(full_path, "w", newline="", encoding="utf-8") as file:
+        writer = csv.DictWriter(file, fieldnames=headers)
+        writer.writeheader()
+        writer.writerows(data)
 
 if __name__ == "__main__":
-    
-# campaign_id,date,impressions,clicks,spend,conversions
-# CMP025,2025-04-18,3653,60,64.29,2
-# CMP020,2025-05-03,24465,764,1394.62,42
-# CMP019,2025-02-05,7214,236,135.93,21
-# CMP046,2025-06-04,10631,201,298.82,18
-# CMP044,2025-03-26,31942,964,744.4,37
-# CMP041,2025-02-22,37210,984,1716.18,32
-# CMP036,2025-01-04,7112,265,227.31,22
-# CMP043,2025-06-10,1074,34,56.89,1
+
     filename = "ad_data_small.csv"
 
     start_time = time.perf_counter()
@@ -79,5 +66,5 @@ if __name__ == "__main__":
 
     end_time = time.perf_counter()
 
-    #Execution time: 0.003560 seconds on 200 lines
+    #Execution time: 0.003059 seconds on 200 lines
     print(f"Execution time: {end_time - start_time:.6f} seconds on {rows_length} lines")
