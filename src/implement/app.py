@@ -10,7 +10,14 @@ def getMetric(filename):
         raise ValueError(f"The input file '{filename}' is empty.")
 
     #Lazy mode
-    lazy_df = pl.scan_csv(filename)
+    lazy_df = pl.scan_csv(filename, schema={
+        "campaign_id": pl.String,
+        "date": pl.String,
+        "impressions": pl.Int64,
+        "clicks": pl.Int64,
+        "spend": pl.Float64,
+        "conversions": pl.Int64,
+    },)
 
     try:
         total_raw_rows = lazy_df.select(pl.len()).collect().item()
@@ -18,8 +25,9 @@ def getMetric(filename):
         raise Exception(f"File {filename} contains no valid data rows after filtering malformed rows.")
     except Exception as e:
         raise Exception(f"Failed to read raw row count: {e}")
-
-    total_raw_rows = lazy_df.select(pl.len()).collect().item()
+    
+    if total_raw_rows == 0:
+        raise ValueError("CSV contains no data rows.")
 
     agg_query = (
         lazy_df.group_by("campaign_id")

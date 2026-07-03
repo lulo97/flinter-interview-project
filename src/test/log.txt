@@ -1,0 +1,8 @@
+(flinter-interview-project) C:\Users\ADMIN\Downloads\flinter-interview-project>python src\test\test.py
+...C:\Users\ADMIN\Downloads\flinter-interview-project\src\implement\app.py:54: DeprecationWarning: the `streaming` parameter was deprecated in 1.25.0; use `engine` instead.
+  agg_resolved = agg_query.collect(streaming=True)
+..............
+----------------------------------------------------------------------
+Ran 17 tests in 0.108s
+
+OK
