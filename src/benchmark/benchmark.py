@@ -10,7 +10,7 @@ from csv_lib_method import csv_lib
 from manual_method import manual
 from pandas_method import pandas_method
 from polars_method import polars_method
-
+from pyarrow_method import pyarrow_method
 
 def run_module(module, filename, method_name):
     # Each module exposes getMetric(filename) -> (metrics, rows_length)
@@ -46,6 +46,7 @@ def main():
         (manual, "manual"),
         (pandas_method, "pandas"),
         (polars_method, "polars"),
+        (pyarrow_method, "pyarrow")
     ]
 
     print(f"Benchmarking with file: {csv_file}")
