@@ -2,16 +2,17 @@
 
 Install Python 3.11.9, uv 0.11.16.
 
-Open project .\flinter-interview-project and run commands:
+Open project `.\flinter-interview-project` and run commands:
 
     uv venv
-    
+
     uv pip install -r requirements.txt
 
 # How to run the program
 
-Run run.bat file (Windows only) to run both venv enviroment and excute python file.
-Or run with command "python src\implement\app.py"
+Run run.bat file (Windows only) to run both venv environment and excute the python file.
+
+Or run with the command `python src\implement\app.py`
 
 # Libraries used
 
@@ -35,31 +36,31 @@ tzdata==2026.2
 
 # Documented decisions
 
-Using python to solve challenge because this problem is a data processing problem which Python has many libaries support and easy to work with.
+Using Python to solve challenge because this problem is a data processing problem, and Python has many libraries support and easy to work with.
 
-Using polars as primary library to process csv data because it's backended by Rust which is very fast (proved in src\benchmark\log.txt file).
+Using Polars as primary library to process CSV data because it's backend by Rust, which provides excellent speeed (proved in src\benchmark\log.txt file).
 
-Using polars's LazyFrame to utilize underlaying query optimizer of polars.
+Using Polars's LazyFrame to utilize underlying query optimizer of Polars.
 
-Using streaming mode to proces chunk by chunk to avoid out of memory error (agg_query.collect(streaming=True)).
+Using streaming mode to proces data chunk by chunk to avoid out-of-memory errors (agg_query.collect(streaming=True)).
 
-Using top_k() with speed of O(NlogK) with k = 10 instead of sort() with speed of O(NlogN)
+Using top_k() with time complexity of O(N log K) where k = 10 instead of sort() with time complexity of O(N log N)
 
 # Benchmark
 
-Code for benmark located in src\benchmark\benchmark.py with output log in src\benchmark\log.txt
+Code for benchmarking is located in src\benchmark\benchmark.py with the output log in src\benchmark\log.txt
 
 # Test
 
-Code for test located in src\test\test.py with output log in src\test\log.txt
+Code for test is located in src\test\test.py with the output log in src\test\log.txt
 
 # Processing time for the 1GB file
 
-Run file src\implement\app.py to get process time for 1GB file ranged from 1.5 second to 1.6 second.
+Run file src\implement\app.py to get process time for 1GB file, which ranges from 1.5 to 1.6 seconds.
 
-Measured on Ryzen 7-7735HS, 16GB laptop.
+Measured on a laptop with an AMD Ryzen 7 7735HS processor and 16 GB of RAM.
 
-Output file on: 
+Output files: 
 - src\implement\result\top10_cpa.csv
     campaign_id,total_impressions,total_clicks,total_spend,total_conversions,CTR,CPA
     CMP016,13686317849,375883156,393677129.86,20410131,0.0275,19.29
