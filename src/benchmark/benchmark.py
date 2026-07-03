@@ -72,18 +72,18 @@ def run_module(module, filename):
     return time_deltas, uss_monitor_list, rows_length
 
 def main():
-    csv_file = "ad_data_test.csv"
+    csv_file = "ad_data.csv"
 
     if not os.path.isfile(csv_file):
         print(f"Error: File '{csv_file}' not found.")
         sys.exit(1)
 
     modules = [
-        (csv_lib, "csv_lib"),
-        (manual, "manual"),
-        (pandas_method, "pandas"),
-        (polars_method, "polars"),
-        (pyarrow_method, "pyarrow"),
+        # (csv_lib, "csv_lib"),
+        # (manual, "manual"),
+        # (pandas_method, "pandas"),
+        # (polars_method, "polars"),
+        # (pyarrow_method, "pyarrow"),
         (app, "implement")
     ]
 
@@ -124,9 +124,4 @@ def main():
         print("   " + "=" * 52)
 
 if __name__ == "__main__":
-# csv_lib : 2.928765 sec  (rows: 1000001)
-# manual : 1.466388 sec  (rows: 1000001)
-# pandas : 0.747996 sec  (rows: 1000001)
-# polars : 0.084390 sec  (rows: 1000001)
-
     main()

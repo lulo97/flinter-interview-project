@@ -3,6 +3,12 @@ import time
 import polars as pl
 
 def getMetric(filename):
+    if not os.path.exists(filename):
+        raise FileNotFoundError(f"The input file '{filename}' was not found.")
+        
+    if os.path.getsize(filename) == 0:
+        raise ValueError(f"The input file '{filename}' is empty.")
+
     #Lazy mode
     lazy_df = pl.scan_csv(filename)
 
@@ -33,7 +39,7 @@ def getMetric(filename):
 
     return agg_resolved, total_raw_rows + 1
 
-#Using top_k O(n) instead of sort O(nlogn)
+#Using top_k O(nlogk) instead of sort O(nlogn)
 def getTop10HighestCTR(metrics: pl.DataFrame):
     return metrics.top_k(10, by="ctr")
 
@@ -61,4 +67,4 @@ if __name__ == "__main__":
 
     end_time = time.perf_counter()
 
-    print(f"Optimized Execution time: {end_time - start_time:.6f} seconds")
+    print(f"Execution time: {end_time - start_time:.6f} seconds")
