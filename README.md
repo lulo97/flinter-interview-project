@@ -39,6 +39,10 @@ Using top_k() with speed of O(NlogK) with k = 10 instead of sort() with speed of
 
 Code for benmark located in src\benchmark\benchmark.py with output log in src\benchmark\log.txt
 
+# Test
+
+Code for test located in src\test\test.py with output log in src\test\log.txt
+
 # Processing time for the 1GB file
 
 Run file src\implement\app.py to get process time for 1GB file ranged from 1.5 second to 1.6 second.
