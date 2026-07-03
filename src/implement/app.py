@@ -12,6 +12,13 @@ def getMetric(filename):
     #Lazy mode
     lazy_df = pl.scan_csv(filename)
 
+    try:
+        total_raw_rows = lazy_df.select(pl.len()).collect().item()
+    except pl.exceptions.NoDataError:
+        raise Exception(f"File {filename} contains no valid data rows after filtering malformed rows.")
+    except Exception as e:
+        raise Exception(f"Failed to read raw row count: {e}")
+
     total_raw_rows = lazy_df.select(pl.len()).collect().item()
 
     agg_query = (
@@ -24,6 +31,7 @@ def getMetric(filename):
         ])
         .with_columns([
             (pl.col("clicks") / pl.col("impressions"))
+                #Handle edge case by fill with 0
                 .fill_nan(0)
                 .fill_null(0)
                 .alias("ctr"),
@@ -47,8 +55,23 @@ def getTop10LowestCPA(metrics: pl.DataFrame):
     return metrics.bottom_k(10, by="cpa")
 
 def save_to_csv(df: pl.DataFrame, filename: str) -> None:
+    df = df.rename({
+        "impressions": "total_impressions",
+        "clicks": "total_clicks",
+        "spend": "total_spend",
+        "conversions": "total_conversions",
+        "ctr": "CTR",
+        "cpa": "CPA",
+    })
     current_dir = os.path.dirname(os.path.abspath(__file__))
     full_path = os.path.join(current_dir, filename)
+
+    df = df.with_columns([
+        pl.col("total_spend").round(2).map_elements(lambda x: f"{x:.2f}", return_dtype=pl.String),
+        pl.col("CTR").round(4).map_elements(lambda x: f"{x:.4f}", return_dtype=pl.String),
+        pl.col("CPA").round(2).map_elements(lambda x: f"{x:.2f}", return_dtype=pl.String),
+    ])
+
     df.write_csv(full_path)
 
 
