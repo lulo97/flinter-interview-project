@@ -1,33 +1,6 @@
 import os
 import time
 
-def getMetricByCampaignId(campaign_id, rows):
-    total_impressions = 0
-    total_clicks = 0
-    total_spend = 0
-    total_conversions = 0
-
-    for row in rows:
-        cells = row.split(",")
-        if cells[0] == campaign_id:
-            total_impressions += int(cells[2])
-            total_clicks += int(cells[3])
-            total_spend += float(cells[4])
-            total_conversions += float(cells[5])
-
-    CTR = total_clicks / total_impressions
-    CPA = total_spend / total_conversions if total_conversions else 0
-
-    return {
-        "campaign_id": campaign_id,
-        "impressions": total_impressions,
-        "clicks": total_clicks,
-        "spend": total_spend,
-        "conversions": total_conversions,
-        "ctr": CTR,
-        "cpa": CPA
-    }
-
 def getMetric(filename):
     with open(filename, "r") as file:
         content = file.read().strip()
@@ -38,12 +11,24 @@ def getMetric(filename):
 
     metrics = []
 
-    for i in range(1, len(rows) - 1):
-        campaign_id = rows[i].split(",")[0]
-        exists = any(d.get("campaign_id") == campaign_id for d in metrics)
-        if (exists):
-            continue
-        metrics.append(getMetricByCampaignId(campaign_id, rows))
+    agg = {}
+    for line in rows[1:]:
+        cells = line.split(",")
+        cid = cells[0]
+        m = agg.setdefault(cid, {
+            "campaign_id": cid, "impressions": 0, "clicks": 0,
+            "spend": 0.0, "conversions": 0.0
+        })
+        m["impressions"] += int(cells[2])
+        m["clicks"] += int(cells[3])
+        m["spend"] += float(cells[4])
+        m["conversions"] += float(cells[5])
+
+    metrics = []
+    for m in agg.values():
+        m["ctr"] = m["clicks"] / m["impressions"] if m["impressions"] else 0
+        m["cpa"] = m["spend"] / m["conversions"] if m["conversions"] else 0
+        metrics.append(m)
     
     return metrics, rows;
 
