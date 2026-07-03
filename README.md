@@ -3,7 +3,9 @@
 Install Python 3.11.9, uv 0.11.16.
 
 Open project .\flinter-interview-project and run commands:
+
     uv venv
+    
     uv pip install -r requirements.txt
 
 # How to run the program
@@ -14,13 +16,21 @@ Or run with command "python src\implement\app.py"
 # Libraries used
 
 numpy==2.5.0
+
 pandas==3.0.3
+
 polars==1.42.1
+
 polars-runtime-32==1.42.1
+
 psutil==7.2.2
+
 pyarrow==24.0.0
+
 python-dateutil==2.9.0.post0
+
 six==1.17.0
+
 tzdata==2026.2
 
 # Documented decisions
