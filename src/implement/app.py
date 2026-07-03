@@ -3,10 +3,13 @@ import time
 import polars as pl
 
 def getMetric(filename):
-    df = pl.read_csv(filename)
+    #Lazy mode
+    lazy_df = pl.scan_csv(filename)
 
-    agg = (
-        df.group_by("campaign_id")
+    total_raw_rows = lazy_df.select(pl.len()).collect().item()
+
+    agg_query = (
+        lazy_df.group_by("campaign_id")
         .agg([
             pl.col("impressions").sum(),
             pl.col("clicks").sum(),
@@ -25,16 +28,17 @@ def getMetric(filename):
         ])
     )
 
-    return agg, df.height + 1
+    #Streaming to process chunk by chunk with large data size
+    agg_resolved = agg_query.collect(streaming=True)
 
+    return agg_resolved, total_raw_rows + 1
 
+#Using top_k O(n) instead of sort O(nlogn)
 def getTop10HighestCTR(metrics: pl.DataFrame):
-    return metrics.sort("ctr", descending=True).head(10)
-
+    return metrics.top_k(10, by="ctr")
 
 def getTop10LowestCPA(metrics: pl.DataFrame):
-    return metrics.sort("cpa", descending=False).head(10)
-
+    return metrics.bottom_k(10, by="cpa")
 
 def save_to_csv(df: pl.DataFrame, filename: str) -> None:
     current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -43,17 +47,7 @@ def save_to_csv(df: pl.DataFrame, filename: str) -> None:
 
 
 if __name__ == "__main__":
-
-    # campaign_id,date,impressions,clicks,spend,conversions
-    # CMP025,2025-04-18,3653,60,64.29,2
-    # CMP020,2025-05-03,24465,764,1394.62,42
-    # CMP019,2025-02-05,7214,236,135.93,21
-    # CMP046,2025-06-04,10631,201,298.82,18
-    # CMP044,2025-03-26,31942,964,744.4,37
-    # CMP041,2025-02-22,37210,984,1716.18,32
-    # CMP036,2025-01-04,7112,265,227.31,22
-    # CMP043,2025-06-10,1074,34,56.89,1
-    filename = "ad_data_small.csv"
+    filename = "ad_data.csv"
 
     start_time = time.perf_counter()
 
@@ -67,5 +61,4 @@ if __name__ == "__main__":
 
     end_time = time.perf_counter()
 
-    #Execution time: 0.013073 seconds on 200 lines
-    print(f"Execution time: {end_time - start_time:.6f} seconds on {rows_length} lines")
+    print(f"Optimized Execution time: {end_time - start_time:.6f} seconds")

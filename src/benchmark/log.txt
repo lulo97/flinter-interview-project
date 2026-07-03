@@ -1,0 +1,98 @@
+Benchmarking with file: ad_data_test.csv
+--------------------------------------------------
+Main thread: 8428 | Monitor thread: 5408
+
+CSV_LIB  | Total: 4.292902 sec | Rows: 1,000,001
+   ----------------------------------------------------
+    Start USS   : 69.85547 MiB (73,248,768 bytes)
+    End USS     : 74.67969 MiB (78,307,328 bytes)
+    Highest USS : 490.74219 MiB (514,580,480 bytes)
+    Net Delta   : +4.82422 MiB
+    Peak Delta  : 420.88672 MiB
+   ----------------------------------------------------
+    getMetric      : 4.287779 sec
+    get_top_ctr    : 0.003095 sec
+    get_top_cpa    : 0.000027 sec
+    save_top_ctr   : 0.001356 sec
+    save_top_cpa   : 0.000644 sec
+   ====================================================
+Main thread: 8428 | Monitor thread: 16996
+
+MANUAL   | Total: 1.662775 sec | Rows: 1,000,001
+   ----------------------------------------------------
+    Start USS   : 74.65625 MiB (78,282,752 bytes)
+    End USS     : 76.25000 MiB (79,953,920 bytes)
+    Highest USS : 200.67969 MiB (210,427,904 bytes)
+    Net Delta   : +1.59375 MiB
+    Peak Delta  : 126.02344 MiB
+   ----------------------------------------------------
+    getMetric      : 1.657517 sec
+    get_top_ctr    : 0.003417 sec
+    get_top_cpa    : 0.000017 sec
+    save_top_ctr   : 0.001097 sec
+    save_top_cpa   : 0.000728 sec
+   ====================================================
+Main thread: 8428 | Monitor thread: 15024
+
+PANDAS   | Total: 1.118795 sec | Rows: 1,000,001
+   ----------------------------------------------------
+    Start USS   : 76.23047 MiB (79,933,440 bytes)
+    End USS     : 124.97266 MiB (131,043,328 bytes)
+    Highest USS : 171.02344 MiB (179,331,072 bytes)
+    Net Delta   : +48.74219 MiB
+    Peak Delta  : 94.79297 MiB
+   ----------------------------------------------------
+    getMetric      : 1.106817 sec
+    get_top_ctr    : 0.004810 sec
+    get_top_cpa    : 0.000596 sec
+    save_top_ctr   : 0.002323 sec
+    save_top_cpa   : 0.004250 sec
+   ====================================================
+Main thread: 8428 | Monitor thread: 6216
+
+POLARS   | Total: 0.118974 sec | Rows: 1,000,001
+   ----------------------------------------------------
+    Start USS   : 124.95312 MiB (131,022,848 bytes)
+    End USS     : 256.67578 MiB (269,144,064 bytes)
+    Highest USS : 256.67578 MiB (269,144,064 bytes)
+    Net Delta   : +131.72266 MiB
+    Peak Delta  : 131.72266 MiB
+   ----------------------------------------------------
+    getMetric      : 0.108285 sec
+    get_top_ctr    : 0.000398 sec
+    get_top_cpa    : 0.000185 sec
+    save_top_ctr   : 0.008394 sec
+    save_top_cpa   : 0.001712 sec
+   ====================================================
+Main thread: 8428 | Monitor thread: 2724
+
+PYARROW  | Total: 0.135918 sec | Rows: 1,000,001
+   ----------------------------------------------------
+    Start USS   : 256.66016 MiB (269,127,680 bytes)
+    End USS     : 334.55469 MiB (350,806,016 bytes)
+    Highest USS : 334.55469 MiB (350,806,016 bytes)
+    Net Delta   : +77.89453 MiB
+    Peak Delta  : 77.89453 MiB
+   ----------------------------------------------------
+    getMetric      : 0.134230 sec
+    get_top_ctr    : 0.000176 sec
+    get_top_cpa    : 0.000075 sec
+    save_top_ctr   : 0.000824 sec
+    save_top_cpa   : 0.000613 sec
+   ====================================================
+Main thread: 8428 | Monitor thread: 17072
+
+IMPLEMENT | Total: 0.088366 sec | Rows: 1,000,001
+   ----------------------------------------------------
+    Start USS   : 334.54297 MiB (350,793,728 bytes)
+    End USS     : 364.28125 MiB (381,976,576 bytes)
+    Highest USS : 364.28125 MiB (381,976,576 bytes)
+    Net Delta   : +29.73828 MiB
+    Peak Delta  : 29.73828 MiB
+   ----------------------------------------------------
+    getMetric      : 0.085181 sec
+    get_top_ctr    : 0.000808 sec
+    get_top_cpa    : 0.000356 sec
+    save_top_ctr   : 0.001215 sec
+    save_top_cpa   : 0.000806 sec
+   ====================================================

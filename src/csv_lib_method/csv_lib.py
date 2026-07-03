@@ -39,7 +39,7 @@ def getTop10HighestCTR(metrics):
 def getTop10LowestCPA(metrics):
     return sorted(metrics, key=lambda x: x['cpa'], reverse=False)[0:10]
 
-def save_dicts_to_csv(data, filename) -> None:
+def save_to_csv(data, filename) -> None:
     headers = list(data[0].keys())
 
     current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -61,8 +61,8 @@ if __name__ == "__main__":
     top_10_highest_ctr = getTop10HighestCTR(metrics)
     top_10_lowest_cpa = getTop10LowestCPA(metrics)
 
-    save_dicts_to_csv(top_10_highest_ctr, "top10_ctr.csv")
-    save_dicts_to_csv(top_10_lowest_cpa, "top10_cpa.csv")
+    save_to_csv(top_10_highest_ctr, "top10_ctr.csv")
+    save_to_csv(top_10_lowest_cpa, "top10_cpa.csv")
 
     end_time = time.perf_counter()
 

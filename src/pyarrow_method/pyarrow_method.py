@@ -69,7 +69,7 @@ def getTop10LowestCPA(metrics):
     return metrics.sort_by([("cpa", "ascending")]).slice(0, 10)
 
 
-def save_df_to_csv(data, filename):
+def save_to_csv(data, filename):
     csv.write_csv(data, filename)
 
 if __name__ == "__main__":
@@ -82,8 +82,8 @@ if __name__ == "__main__":
     top_10_highest_ctr = getTop10HighestCTR(metrics)
     top_10_lowest_cpa = getTop10LowestCPA(metrics)
 
-    save_df_to_csv(top_10_highest_ctr, "top10_ctr.csv")
-    save_df_to_csv(top_10_lowest_cpa, "top10_cpa.csv")
+    save_to_csv(top_10_highest_ctr, "top10_ctr.csv")
+    save_to_csv(top_10_lowest_cpa, "top10_cpa.csv")
 
     end_time = time.perf_counter()
 
