@@ -110,3 +110,8 @@ temp/
 pip-wheel-metadata/
 
 *.csv
+!ad_data_small.csv
+!ad_data_test.csv
+!src/implement/top10_cpa.csv
+!src/implement/top10_ctr.csv
+!src/benchmark/log.txt
